@@ -1,3 +1,4 @@
+// Copyright 2017-2021 Yaki Studios. All Rights Reserved.
 #include "RootMotionExtractorGUI.h"
 #include "PropertyEditorModule.h"
 #include "PropertyCustomizationHelpers.h"
@@ -23,7 +24,7 @@ void FRootMotionExtractorGUI::ShowAddBoneWindow(const TSharedPtr <FBoneTask> Bon
 
 	if (!AddBoneWindowContainer.IsValid()) {
 		SAssignNew(AddBoneWindowContainer, SWindow)
-			.ClientSize(FVector2D(500, 680))
+			.ClientSize(FVector2D(500, 750))
 			.CreateTitleBar(true)
 			.Title(WindowTitle)
 			.SupportsMaximize(false)
@@ -46,7 +47,7 @@ void FRootMotionExtractorGUI::ShowAddBoneWindow(const TSharedPtr <FBoneTask> Bon
 void FRootMotionExtractorGUI::ShowMainWindow() {
 	if (!WindowContainer.IsValid()) {
 		SAssignNew(WindowContainer, SWindow)
-			.ClientSize(FVector2D(500, 900 /*900*/))
+			.ClientSize(FVector2D(500, 970 /*900*/))
 			.CreateTitleBar(true)
 			.Title(FText::FromString(TEXT("Root Motion Extractor © Yaki Studios")))
 			.SupportsMaximize(false)
@@ -187,7 +188,7 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateAddBoneWindow(const TSha
 		]
 		+ SCanvas::Slot()
 		.Position(FVector2D(5, 400))
-		.Size(FVector2D(480, 360))
+		.Size(FVector2D(480, 500))
 		[
 			SNew(SVerticalBox)
 			+ SVerticalBox::Slot()
@@ -211,18 +212,22 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateAddBoneWindow(const TSha
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_MovementSpeed, false)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_MovementSpeed, false)
 					
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Movement Speed")))
 							]
@@ -230,17 +235,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateAddBoneWindow(const TSha
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Right, false)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Right, false)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Right Movement")))
 							]
@@ -248,17 +257,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateAddBoneWindow(const TSha
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Forward, false)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Forward, false)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Forward Movement")))
 							]
@@ -266,17 +279,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateAddBoneWindow(const TSha
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Up, false)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Up, false)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Up Movement")))
 							]
@@ -284,17 +301,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateAddBoneWindow(const TSha
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Yaw, false)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Yaw, false)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Yaw")))
 							]
@@ -302,17 +323,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateAddBoneWindow(const TSha
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Pitch, false)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Pitch, false)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Pitch")))
 							]
@@ -320,17 +345,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateAddBoneWindow(const TSha
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Roll, false)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Roll, false)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Roll")))
 							]
@@ -340,7 +369,7 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateAddBoneWindow(const TSha
 			]
 		]
 		+ SCanvas::Slot()
-		.Position(FVector2D(5, 600))
+		.Position(FVector2D(5, 680))
 		.Size(FVector2D(480, 50))
 		[
 			SNew(SVerticalBox)
@@ -600,7 +629,7 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 		]
 		+ SCanvas::Slot()
 		.Position(FVector2D(5, 200))
-		.Size(FVector2D(480, 350))
+		.Size(FVector2D(480, 500))
 		[
 			SNew(SVerticalBox)
 			+ SVerticalBox::Slot()
@@ -624,18 +653,22 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_MovementSpeed, true).IsChecked(ECheckBoxState::Checked)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_MovementSpeed, true)
 					
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Movement Speed")))
 							]
@@ -643,17 +676,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Right, true)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Right, true)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Right Movement")))
 							]
@@ -661,17 +698,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Forward, true)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Forward, true)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Forward Movement")))
 							]
@@ -679,17 +720,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Up, true)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Up, true)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Up Movement")))
 							]
@@ -697,17 +742,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Yaw, true)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Yaw, true)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Yaw")))
 							]
@@ -715,17 +764,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Pitch, true)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Pitch, true)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Pitch")))
 							]
@@ -733,17 +786,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::SetCaptureChannel, ECaptureChannel::CC_Roll, true)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::GUIIsChannelSelected, ECaptureChannel::CC_Roll, true)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Capture Roll")))
 							]
@@ -753,7 +810,7 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 			]
 		]
 		+ SCanvas::Slot()
-		.Position(FVector2D(5, 400))
+		.Position(FVector2D(5, 480))
 		.Size(FVector2D(480, 250))
 		[
 			SNew(SVerticalBox)
@@ -817,7 +874,7 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 			]
 		]
 		+ SCanvas::Slot()
-		.Position(FVector2D(5, 545))
+		.Position(FVector2D(5, 630))
 		.Size(FVector2D(480, 430 /*420*/))
 		[
 			SNew(SVerticalBox)
@@ -842,17 +899,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::DeleteAllCurveDataChanged)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::IsDeleteAllCurveData)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Delete All Existing Curve Data")))
 							]
@@ -860,17 +921,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::IncrementMovementChanged)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::IsIncrementMovement)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Enable Incremental Movement")))
 							]
@@ -878,17 +943,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::IncrementRotationChanged)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::IsIncrementRotation)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Enable Incremental Rotation")))
 							]
@@ -896,17 +965,21 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(SCheckBox)
 								.OnCheckStateChanged_Raw(this, &FRootMotionExtractorGUI::AutoCreateTargetCopyChanged)
 								.IsChecked_Raw(this, &FRootMotionExtractorGUI::IsAutoCreateTargetCopy)
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Create In-Place target copies")))
 							]
@@ -914,15 +987,19 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 						+ SVerticalBox::Slot()
 						.Padding(5.0f, 5.0f)
 						[
-							SNew(SWrapBox)
-							.PreferredWidth(300.f)
-							+ SWrapBox::Slot()
+							SNew(SHorizontalBox)
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
 							[
 								SNew(STextBlock).Text(FText::FromString(TEXT("Curve Multiplier: ")))
 							]
-							+ SWrapBox::Slot()
+							+ SHorizontalBox::Slot()
 							.VAlign(VAlign_Center)
+							.HAlign(EHorizontalAlignment::HAlign_Left)
+							.AutoWidth()
+							.Padding(0.f, 5.f)
 							[
 								SNew(SBox).MinDesiredWidth(50)
 								[
@@ -935,7 +1012,7 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 			]			
 		]
 		+ SCanvas::Slot()
-		.Position(FVector2D(5, 790/*790*/))
+		.Position(FVector2D(5, 870/*790*/))
 		.Size(FVector2D(480, 50))
 		[
 			SNew(SVerticalBox)
@@ -955,7 +1032,7 @@ TSharedRef < SWidget > FRootMotionExtractorGUI::GenerateWindow() {
 			]
 		]
 		+ SCanvas::Slot()
-		.Position(FVector2D(5, 830 /*830*/))
+		.Position(FVector2D(5, 910 /*830*/))
 		.Size(FVector2D(480, 50))
 		[
 			SNew(SVerticalBox)

@@ -1,3 +1,4 @@
+// Copyright 2017-2021 Yaki Studios. All Rights Reserved.
 #pragma once
 #include "CoreMinimal.h"
 #include "RMEData.h"
@@ -9,20 +10,19 @@
 
 namespace RMEUtilities {
 
-	TArray <FAssetData> GetFilesInFolder(FString Dir, FName ByClass, bool bSearchSubClasses) {
+	TArray <FAssetData> GetFilesInFolder(FString Dir, FName ByClass, bool bSearchSubClasses, bool bAllowSubfolders) 
+	{
 		TArray <FAssetData> AssetData;
-		TArray <FAssetData> FilesInFolder;
+
 		FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
-		AssetRegistryModule.Get().GetAssetsByClass(ByClass, AssetData, bSearchSubClasses);
-		FString Path = Dir + "/";
-		for (auto &Asset : AssetData) {
-			FString testString = Asset.GetFullName();
-			testString.RemoveFromStart(Asset.AssetClass.ToString() + " ");
-			if (testString.StartsWith(Path)) {
-				FilesInFolder.Add(Asset);
-			}
-		}
-		return FilesInFolder;
+		FARFilter Filter;
+		Filter.ClassNames.Add(ByClass);
+		Filter.PackagePaths.Add(*Dir);
+		Filter.bRecursiveClasses = bSearchSubClasses;
+		Filter.bRecursivePaths = bAllowSubfolders;
+		AssetRegistryModule.Get().GetAssets(Filter, AssetData);
+
+		return AssetData;
 	}
 
 	int32 GenerateUID(int32 Length, const TArray <TSharedPtr <FBoneTask>> &BoneTasks) {

@@ -1,3 +1,4 @@
+// Copyright 2017-2021 Yaki Studios. All Rights Reserved.
 #pragma once
 
 #include "CoreMinimal.h"

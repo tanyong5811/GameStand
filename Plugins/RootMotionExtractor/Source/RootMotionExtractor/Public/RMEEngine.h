@@ -1,3 +1,4 @@
+// Copyright 2017-2021 Yaki Studios. All Rights Reserved.
 #pragma once
 #include "CoreMinimal.h"
 #include "RMEData.h"
@@ -193,7 +194,7 @@ namespace RMEEngine /*that could =)) */ {
 			return false;
 		}
 
-		TArray <FAssetData> SourceFiles = RMEUtilities::GetFilesInFolder(SourceDir, UAnimSequenceBase::StaticClass()->GetFName(), true);
+		TArray <FAssetData> SourceFiles = RMEUtilities::GetFilesInFolder(SourceDir, UAnimSequenceBase::StaticClass()->GetFName(), true, true);
 
 		if (SourceFiles.Num() <= 0) {
 			LastError = "There are no files in Source directory.";
@@ -202,8 +203,8 @@ namespace RMEEngine /*that could =)) */ {
 
 		bOperationStarted = true;
 		FoundSourceFiles = SourceFiles.Num();
-		TArray <FAssetData> TargetFiles = RMEUtilities::GetFilesInFolder(TargetDir, UAnimSequenceBase::StaticClass()->GetFName(), true);
-		TargetFiles.Append(RMEUtilities::GetFilesInFolder(TargetDir, UCurveFloat::StaticClass()->GetFName(), true));
+		TArray <FAssetData> TargetFiles = RMEUtilities::GetFilesInFolder(TargetDir, UAnimSequenceBase::StaticClass()->GetFName(), true, false);
+		TargetFiles.Append(RMEUtilities::GetFilesInFolder(TargetDir, UCurveFloat::StaticClass()->GetFName(), true, false));
 
 		for (auto& SF : SourceFiles) {
 
@@ -213,7 +214,7 @@ namespace RMEEngine /*that could =)) */ {
 
 			const int32 FoundEntry = TargetFiles.IndexOfByPredicate([&SF](const FAssetData& InItem)
 			{
-				return InItem.AssetName == SF.AssetName;
+				return InItem.AssetName == SF.AssetName && InItem.GetAsset() != SF.GetAsset();
 			});
 			if (FoundEntry != INDEX_NONE)
 			{
@@ -390,37 +391,45 @@ namespace RMEEngine /*that could =)) */ {
 							WorkJob.Source.ObjectPath.ToString().ParseIntoArray(AssetPath, *FString("/"), true);
 							PackagePath.RemoveFromEnd(AssetPath[AssetPath.Num() - 1]);
 							PackagePath = PackagePath;
-							UE_LOG(LogTemp, Warning, TEXT("%s"), *PackagePath);
 						}
-
-						TArray<FString> outname;
-						WorkJob.Source.ObjectPath.ToString().ParseIntoArray(outname, *FString("."), true);
-						FString ShortName = outname[outname.Num() - 1] + "_IP";
+						FString ShortName = WorkJob.Source.GetAsset()->GetName() + "_IP";
 						PackagePath += ShortName;
-						UPackage* Package = CreatePackage(nullptr, *PackagePath);
+						UPackage* Package;
+#if ENGINE_MINOR_VERSION < 26
+						Package = CreatePackage(NULL, *PackagePath);
+#else 
+						Package = CreatePackage(*PackagePath);
+#endif
+						UE_LOG(LogTemp, Warning, TEXT("%s"), *PackagePath);
 						switch (WorkJob.SourceType)
 						{
 						case EAssetType::AT_Animation:
-							TAnim = NewObject<UAnimSequence>(Package, WorkJob.Source.GetClass(), *ShortName, EObjectFlags::RF_Public | EObjectFlags::RF_Standalone);
-							if (TAnim) {
-								TAnim = Cast<UAnimSequence>(DuplicateObject(WorkJob.Source.GetAsset(), Package, FName(*ShortName)));
-								TAnim->bEnableRootMotion = false;
-								TAnim->bForceRootLock = true;
-								FAssetRegistryModule::AssetCreated(TAnim);
-								Package->FullyLoad();
-								Package->MarkPackageDirty();
-								WorkJob.TargetType = EAssetType::AT_Animation;
-							}
+							TAnim = Cast<UAnimSequence>(DuplicateObject(WorkJob.Source.GetAsset(), Package, *ShortName));
+							TAnim->SetFlags(RF_Public | RF_Standalone);
+
+#if ENGINE_MINOR_VERSION < 20
+							TAnim->RawCurveData.Empty();
+#else
+							UAnimationBlueprintLibrary::RemoveAllCurveData(TAnim);
+#endif
+							TAnim->RefreshCurveData();
+
+							TAnim->bEnableRootMotion = false;
+							TAnim->bForceRootLock = true;
+							WorkJob.TargetType = EAssetType::AT_Animation;
+							TAnim->PostLoad();
+							TAnim->MarkPackageDirty();
+							// Notify asset registry of new asset
+							FAssetRegistryModule::AssetCreated(TAnim);
 							break;
 						case EAssetType::AT_Montage:
-							TMont = NewObject<UAnimMontage>(Package, WorkJob.Source.GetClass(), *ShortName, EObjectFlags::RF_Public | EObjectFlags::RF_Standalone);
-							if (TMont) {
-								TMont = Cast<UAnimMontage>(DuplicateObject(WorkJob.Source.GetAsset(), Package, FName(*ShortName)));
-								FAssetRegistryModule::AssetCreated(TAnim);
-								Package->FullyLoad();
-								Package->MarkPackageDirty();
-								WorkJob.TargetType = EAssetType::AT_Montage;
-							}
+							TMont = Cast<UAnimMontage>(DuplicateObject(WorkJob.Source.GetAsset(), Package, *ShortName));
+							TMont->SetFlags(RF_Public | RF_Standalone);
+							WorkJob.TargetType = EAssetType::AT_Montage;
+							TMont->PostLoad();
+							TMont->MarkPackageDirty();
+							// Notify asset registry of new asset
+							FAssetRegistryModule::AssetCreated(TMont);
 							break;
 						}
 					}

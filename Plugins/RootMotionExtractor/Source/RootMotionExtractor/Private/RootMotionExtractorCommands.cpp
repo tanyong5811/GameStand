@@ -1,4 +1,4 @@
-// Copyright2017 Yaki Studios, Inc. All Rights Reserved.
+// Copyright 2017-2021 Yaki Studios. All Rights Reserved.
 
 #include "RootMotionExtractorCommands.h"
 
